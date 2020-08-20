@@ -1,0 +1,31 @@
+#nextvideo{
+	top: 150px;
+    right: 50px;
+    z-index: 13;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    position: absolute;
+	opacity: 0.5;
+}
+#nextvideo:hover{
+	opacity:1;
+}
+#nextvideo .divone{
+	height: 74px;
+	position: absolute;
+	top: 30px;
+	left: 62px;z-index: 2;
+	border-style: solid;
+	border-width: 47px;
+	border-color: transparent transparent transparent #202020;
+}
+#nextvideo .divtwo{
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	top: 0;
+	z-index: 1;
+	border-radius: 300px;
+	background: grey;
+}
