@@ -8,8 +8,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://www.funimation.com/*?lang=english&qid="],
-	  "css": ["styles.css"],
+      "matches": ["https://www.funimation.com/*"],
       "js": ["content.js"]
     }
   ]

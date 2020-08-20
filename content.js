@@ -40,14 +40,14 @@ function loudinfo(){
 	let data = document.querySelector(".video-player-section .row .video-player-container iframe").contentDocument.body.innerHTML;
     iframejs = JSON.parse(data.substring(data.indexOf("var show = ")+11,data.indexOf("var user")-6));
 	iframe = document.querySelector(".video-player-section .row .video-player-container iframe").contentWindow.document;
-	console.log(iframe);
 	showready();
 	
 	
 }
 function showready(){
 	setTimeout(()=>{
-		if(iframejs && iframe){
+		if(iframejs && iframe && (!episode ||(episode!= 
+		iframejs.seasons.find(e => e.episodes.find(j => j.lastExperienceKey === null)).episodes.find(e => e.lastExperienceKey === null) ))){
 			season = iframejs.seasons.find(e => e.episodes.find(j => j.lastExperienceKey === null));
 			episode = season.episodes.find(e => e.lastExperienceKey === null);
 			totalepisodes = parseInt(season.episodes[season.episodes.length-1].episodeId);
@@ -57,7 +57,6 @@ function showready(){
 	},500);
 }
 function loop(){
-	//could not get the variable of the iframe show
 	if(iframejs != null && iframe.querySelectorAll("#nextvideo").length == 0
 	&& season!=null
 	&& (iframe.querySelector("video").duration/60)-(iframe.querySelector("video").currentTime/60)<2.5
@@ -68,28 +67,33 @@ function loop(){
 	}
 	setTimeout(()=>{loop();},500)
 }
+function loadnextvideo(){
+	setTimeout(()=>{
+		if(document.querySelector(".video-player-section .row .video-player-container iframe") != null){
+			loudinfo(); nextattheend();
+		}
+		else{loadnextvideo();}
+	},5000)
+}
 function next(){
 	if(totalepisodes>parseInt(episode.episodeId)){
 		iframejs = null;
 		let nextepisode = season.episodes[season.episodes.indexOf(episode)+1]
 		document.querySelector(".video-player-section .row .video-player-container iframe").src =
 		"/player/"+nextepisode.languages.english.alpha.simulcast.experienceId+"/?bdub=0&qid=";
-		setTimeout(()=>{
-			document.querySelector(".video-player-section .row .video-player-container iframe").contentWindow.addEventListener('DOMContentLoaded', ()=>{
-			loudinfo(); nextattheend();
-			},false);
-			},2000)
+		loadnextvideo();
 	}
 }
 function nextattheend(){
 	iframe.querySelector("video").addEventListener('ended',myHandler,false);
 		function myHandler(e) {
-			console.log("next");
 		   next();
 	}
 }
-document.querySelector(".video-player-section .row .video-player-container iframe").contentWindow.addEventListener('DOMContentLoaded', ()=>{
-	loudinfo();
-	loop();
-}, false);
+if(document.querySelector(".video-player-section .row .video-player-container iframe")){
+	document.querySelector(".video-player-section .row .video-player-container iframe").contentWindow.addEventListener('DOMContentLoaded', ()=>{
+		loudinfo();
+		loop();
+	}, false);
+}
 	
