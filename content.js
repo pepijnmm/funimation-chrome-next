@@ -59,7 +59,7 @@ function showready(){
 function loop(){
 	if(iframejs != null && iframe.querySelectorAll("#nextvideo").length == 0
 	&& season!=null
-	&& (iframe.querySelector("video").duration/60)-(iframe.querySelector("video").currentTime/60)<2.5
+	&& (iframe.querySelector("video").duration/60)-(iframe.querySelector("video").currentTime/60)<3.5
 	&& totalepisodes>parseInt(episode.episodeId)){
 		iframe.querySelector("video").insertAdjacentHTML('beforebegin', httml);
 		iframe.querySelector("#nextvideo").onclick = function() { next();}
@@ -78,9 +78,9 @@ function loadnextvideo(){
 function next(){
 	if(totalepisodes>parseInt(episode.episodeId)){
 		iframejs = null;
-		let nextepisode = season.episodes[season.episodes.indexOf(episode)+1]
+		let nextepisode = season.episodes[season.episodes.indexOf(episode)+1];
 		document.querySelector(".video-player-section .row .video-player-container iframe").src =
-		"/player/"+nextepisode.languages.english.alpha.simulcast.experienceId+"/?bdub=0&qid=";
+		"/player/"+Object.entries(nextepisode.languages.english.alpha)[0][1].experienceId+"/?bdub=0&qid=";//array alpha can contain: simulcast or uncut(english means english dubs)
 		loadnextvideo();
 	}
 }
