@@ -1,7 +1,7 @@
 {
   "name": "funimation-next",
   "description": "creates a next button 2.5min before video ends and auto starts next video(on video part replaces)",
-  "version": "1.5",
+  "version": "1.6",
   "manifest_version": 2,
   "permissions": [
     "https://www.funimation.com/"

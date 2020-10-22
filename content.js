@@ -4,6 +4,7 @@ let season;
 let lastseason;
 let episode;
 let lastepisode;
+let nextepisodeId;
 let datahtml;
 let httml = '<div id="nextvideo"><div class="divone"></div><div class="divtwo"></div></div>';
 css="<style type=\"text/css\">\
@@ -56,8 +57,13 @@ function showready(){
 			season = iframejs.seasons.find(e => e.episodes.find(j => j.lastExperienceKey === null));
 			lastseason = iframejs.seasons[iframejs.seasons.length-1].seasonId;
 			episode = season.episodes.find(e => e.lastExperienceKey === null);
-			lastepisode = parseInt(season.episodes[season.episodes.length-1].episodeId);
-			nextattheend();
+			if(Object.entries(episode.languages.english.alpha)[0][1].experienceId == nextepisodeId || nextepisodeId==null){
+				lastepisode = parseInt(season.episodes[season.episodes.length-1].episodeId);
+				nextattheend();
+			}
+			else{
+				loudinfo();
+			}
 		}
 		else{showready();}
 	},500);
@@ -86,6 +92,7 @@ function next(){
 	console.log("next");
 	if(lastepisode>parseInt(episode.episodeId)){
 		let nextepisode = season.episodes[season.episodes.indexOf(episode)+1];
+			nextepisodeId = Object.entries(nextepisode.languages.english.alpha)[0][1].experienceId;
 		nextvideo(Object.entries(nextepisode.languages.english.alpha)[0][1].experienceId);
 	}//next season check
 	else if (lastseason>season.seasonId){
@@ -94,9 +101,11 @@ function next(){
 			return found===true?true: ((e)=>{found = e.seasonId == season.seasonId; return false})(e)
 		});
 		if(nextseason != null){
-			let nextseasoninfo = getnextSeason(Object.entries(episode.languages.english.alpha)[0][1].experienceId, nextseason.seasonId, (data)=>{
+			getnextSeason(Object.entries(episode.languages.english.alpha)[0][1].experienceId, nextseason.seasonId, (data)=>{
 				if(data){
-					nextvideo(Object.entries(episode.languages.english.alpha)[0][1].experienceId);
+					let nextepisode = data.seasons.find(e => e.seasonId == nextseason.seasonId).episodes[0];
+					nextepisodeId = Object.entries(nextepisode.languages.english.alpha)[0][1].experienceId;
+					nextvideo(Object.entries(nextepisode.languages.english.alpha)[0][1].experienceId);
 				}
 			});
 		}
@@ -184,5 +193,6 @@ if(document.querySelector(".video-player-section .row .video-player-container if
 	document.querySelector(".video-player-section .row .video-player-container iframe").contentWindow.addEventListener('DOMContentLoaded', ()=>{
 		loudinfo();
 		loop();
+
 	}, false);
 }
